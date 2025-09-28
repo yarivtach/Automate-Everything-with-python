@@ -1,6 +1,9 @@
 import selenium
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+
+import time
 
 """
 This function is used to get the driver for the chrome browser
@@ -22,9 +25,22 @@ def get_driver(url):
     driver.get(url)
     return driver
 
+def clean_text(text):
+    """
+    This function is used to clean the text from the website
+    @param text: The text to be cleaned
+    @return: The cleaned text
+    """
+    output = text.split(":")[1]
+    return output
+
 def main():
     driver = get_driver("http://automated.pythonanywhere.com")
-    element = driver.find_element(by = "xpath", value = "/html/body/div[1]/div/h1[1]")
+    time.sleep(2) # When we want to get the data from the website about changing value, we need to hold the scraping and then continue
+    value = "/html/body/div[1]/div/h1[1]"
+    element = driver.find_element(by = "xpath", value = value) # CAN BE WRITE AS (By.XPATH, value = "/html/body/div[1]/div/h1[1]")
     return element
 
 print(main().text)
+
+# ------- Automate LOGIN ---------
