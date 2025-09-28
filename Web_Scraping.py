@@ -2,8 +2,10 @@ import selenium
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
-
+from selenium.webdriver.common.keys import Keys
 import time
+from dotenv import load_dotenv
+import os
 
 """
 This function is used to get the driver for the chrome browser
@@ -41,6 +43,30 @@ def main():
     element = driver.find_element(by = "xpath", value = value) # CAN BE WRITE AS (By.XPATH, value = "/html/body/div[1]/div/h1[1]")
     return element
 
-print(main().text)
+# print(main().text)
 
 # ------- Automate LOGIN ---------
+
+def LOGIN(url):
+    """
+    get the url and use  get_driver function to get the driver
+    in this case the value which we want (username and password) can be detected by ID
+    param url: The url of the website to be scraped
+    return: The driver for the chrome browser
+    """ 
+    driver = get_driver(url)
+    time.sleep(2)
+
+    load_dotenv()
+    USER_NAME = os.getenv("Yariv_user_name")
+    PASSWORD = os.getenv("Yariv_password")
+
+    driver.find_element(by = "id", value = "id_username").send_keys("automated")
+    driver.find_element(by = "id", value = "id_password").send_keys("automatedautomated" + Keys.RETURN) # Keys.RETURN is the same as pressing the enter key
+
+    time.sleep(2)
+    driver.find_element(by = "xpath", value = "/html/body/nav/div/a").click()
+
+    print(driver.current_url)
+
+print(LOGIN("http://automated.pythonanywhere.com/login"))
